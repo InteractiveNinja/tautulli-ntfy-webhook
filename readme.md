@@ -18,12 +18,17 @@
 {
 "media_type": "{media_type}",
 <movie>
-"title": "{library_name}",
+"title": "{title}",
 </movie>
+<season>
+"title": "{title}",
+"name": "{episode_count} Episoden wurden hinzugefügt",
+</season>
 <episode>
 "name": "{episode_name}",
 "title": "{show_name}",
 </episode>
 "poster": "{poster_thumb}"
+
 }
 ```

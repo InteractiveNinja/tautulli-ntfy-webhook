@@ -11,7 +11,7 @@ enum MediaTypes {
   ALBUM = 'album',
 }
 
-const supportedMediaTypesArray = [MediaTypes.EPISODE, MediaTypes.MOVIE];
+const supportedMediaTypesArray = [MediaTypes.EPISODE, MediaTypes.MOVIE, MediaTypes.SEASON];
 const logger = Logger.getLogger();
 export const supportedMediaTypes = (
   request: Request<{ media_type: string }>,
