@@ -2,7 +2,6 @@ import express, { Request, Response } from 'express';
 import 'dotenv/config';
 import { ConfigImpl } from './Config';
 import { ResponseMapper } from './ResponseMapper';
-import { supportedWebhookEvents } from './SupportedEvents';
 
 const app = express();
 
@@ -17,7 +16,7 @@ app.get('/status', (req: Request, res: Response) => {
   res.sendStatus(200);
 });
 
-app.use(supportedWebhookEvents);
+// app.use(supportedWebhookEvents);
 
 app.post('/addMedia', (req: Request, res: Response) => {
   ntfyResponseMapper

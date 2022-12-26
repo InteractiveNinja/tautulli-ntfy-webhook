@@ -2,18 +2,16 @@ import { Config, Configuration } from './Config';
 import axios from 'axios';
 import * as https from 'https';
 
-interface PlexWebhook {
-  event: string;
-  Metadata: {
-    title: string;
-    art: string;
-    parentTitle: string;
-  };
+interface TautulliResponse {
+  media_type: string;
+  title: string;
+  name?: string;
+  poster: string;
 }
 
 interface NtfyBaseResponse {
   topic: string;
-  message: string;
+  message?: string;
   title: string;
 }
 
@@ -28,19 +26,19 @@ export class ResponseMapper {
     this.configuration = config.getConfigration();
   }
 
-  public async createAddMediaNtfyResponse(plexHookResponse: PlexWebhook): Promise<NtfyAddMediaResponse> {
+  public async createAddMediaNtfyResponse(tautulliResponse: TautulliResponse): Promise<NtfyAddMediaResponse> {
     return await new Promise<NtfyAddMediaResponse>((resolve, reject) => {
-      const metadata = plexHookResponse.Metadata;
-      if (metadata.art !== '' && metadata.title !== '' && metadata.parentTitle !== '') {
+      const [beforeUrl, afterUrl] = this.configuration.POSTER_TOKEN.split('~');
+      if (tautulliResponse.poster !== '' && tautulliResponse.title !== '') {
         const ntfyResposne: NtfyAddMediaResponse = {
-          attach: metadata.art,
-          title: metadata.parentTitle,
-          message: metadata.title,
+          attach: `${beforeUrl}${tautulliResponse.poster}${afterUrl}`,
+          title: tautulliResponse.title,
           topic: this.configuration.NTFY_TOPIC,
+          message: tautulliResponse.name,
         };
         resolve(ntfyResposne);
       }
-      reject(new Error('Plex Webhook Response is expected in this format'));
+      reject(new Error('Tautulli Webhook Response is expected in this format'));
     });
   }
 
