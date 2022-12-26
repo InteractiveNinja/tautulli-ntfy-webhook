@@ -23,8 +23,8 @@ app.post('/hook', (req: Request, res: Response) => {
     .then(() => {
       res.sendStatus(200);
     })
-    .catch((err) => {
-      res.status(500).send(err);
+    .catch((err: Error) => {
+      res.status(500).send(err.message);
     });
 });
 
