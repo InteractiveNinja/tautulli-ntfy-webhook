@@ -30,7 +30,7 @@ export class ResponseMapper {
   public async createAddMediaNtfyResponse(tautulliResponse: TautulliResponse): Promise<NtfyAddMediaResponse> {
     return await new Promise<NtfyAddMediaResponse>((resolve, reject) => {
       const [beforeUrl, afterUrl] = this.configuration.POSTER_TOKEN.split('~');
-      if (tautulliResponse.poster !== '' && tautulliResponse.title !== '') {
+      if (tautulliResponse.poster != null && tautulliResponse.title != null) {
         const ntfyResposne: NtfyAddMediaResponse = {
           attach: `${beforeUrl}${tautulliResponse.poster}${afterUrl}`,
           title: tautulliResponse.title,
@@ -47,9 +47,10 @@ export class ResponseMapper {
   }
 
   public async sendNtfyResponse(payload: NtfyBaseResponse): Promise<void> {
-    this.logger.info(
+    this.logger.verbose(
       `Trying sending notification to ${this.configuration.NTFY_URL} with topic: ${this.configuration.NTFY_TOPIC}`
     );
+    this.logger.verbose(JSON.stringify(payload));
     return await new Promise((resolve, reject) => {
       axios
         .post(
@@ -66,7 +67,7 @@ export class ResponseMapper {
           }
         )
         .then(() => {
-          this.logger.info('Sending Successful');
+          this.logger.verbose('Sending Successful');
           resolve();
         })
         .catch((err: AxiosError) => {
