@@ -2,7 +2,7 @@ import { Config, Configuration } from './Config';
 import axios from 'axios';
 import * as https from 'https';
 
-export interface PlexWebhook {
+interface PlexWebhook {
   event: string;
   Metadata: {
     title: string;
@@ -11,10 +11,13 @@ export interface PlexWebhook {
   };
 }
 
-export interface NtfyResponse {
+interface NtfyBaseResponse {
   topic: string;
   message: string;
   title: string;
+}
+
+interface NtfyAddMediaResponse extends NtfyBaseResponse {
   attach: string;
 }
 
@@ -25,11 +28,11 @@ export class ResponseMapper {
     this.configuration = config.getConfigration();
   }
 
-  public async createNtfyResponse(plexHookResponse: PlexWebhook): Promise<NtfyResponse> {
-    return await new Promise<NtfyResponse>((resolve, reject) => {
+  public async createAddMediaNtfyResponse(plexHookResponse: PlexWebhook): Promise<NtfyAddMediaResponse> {
+    return await new Promise<NtfyAddMediaResponse>((resolve, reject) => {
       const metadata = plexHookResponse.Metadata;
       if (metadata.art !== '' && metadata.title !== '' && metadata.parentTitle !== '') {
-        const ntfyResposne: NtfyResponse = {
+        const ntfyResposne: NtfyAddMediaResponse = {
           attach: metadata.art,
           title: metadata.parentTitle,
           message: metadata.title,
@@ -41,7 +44,7 @@ export class ResponseMapper {
     });
   }
 
-  public async sendNtfyResponse(payload: NtfyResponse): Promise<void> {
+  public async sendNtfyResponse(payload: NtfyBaseResponse): Promise<void> {
     console.log(`Sending Response to ${this.configuration.NTFY_URL} topic: ${this.configuration.NTFY_TOPIC}`);
     return await axios.post(
       this.configuration.NTFY_URL,
