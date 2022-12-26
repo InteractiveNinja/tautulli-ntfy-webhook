@@ -37,7 +37,7 @@ export class ResponseMapper {
         };
         resolve(ntfyResposne);
       }
-      reject(new Error('Plex Webhook Response is not fully met'));
+      reject(new Error('Plex Webhook Response is expected in this format'));
     });
   }
 
