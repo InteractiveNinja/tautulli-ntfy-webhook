@@ -35,7 +35,7 @@ export class ResponseMapper {
           attach: `${beforeUrl}${tautulliResponse.poster}${afterUrl}`,
           title: tautulliResponse.title,
           topic: this.configuration.NTFY_TOPIC,
-          message: tautulliResponse.name,
+          message: tautulliResponse.name ?? '‎', // No Space Char, prevents default message from ntfy from being shown
         };
         resolve(ntfyResposne);
       } else {
