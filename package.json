@@ -6,6 +6,8 @@
   "scripts": {
     "build": "webpack",
     "dev": "nodemon ./src/index.ts",
+    "checkstyle": "prettier --check . ",
+    "check": "eslint src/*.ts",
     "prepare": "husky install"
   },
   "keywords": [],
