@@ -1,4 +1,6 @@
 import { Config, Configuration } from './Config';
+import axios from 'axios';
+import * as https from 'https';
 
 export interface PlexWebhook {
   event: string;
@@ -40,9 +42,19 @@ export class ResponseMapper {
   }
 
   public async sendNtfyResponse(payload: NtfyResponse): Promise<void> {
-    return await new Promise<void>((resolve) => {
-      console.log(`Sending Response to ${this.configuration.NTFY_URL} topic: ${this.configuration.NTFY_TOPIC}`);
-      resolve();
-    });
+    console.log(`Sending Response to ${this.configuration.NTFY_URL} topic: ${this.configuration.NTFY_TOPIC}`);
+    return await axios.post(
+      this.configuration.NTFY_URL,
+      {
+        ...payload,
+      },
+      {
+        // Disable Cert Verification for self-signed certs
+        httpsAgent: new https.Agent({
+          rejectUnauthorized: false,
+        }),
+        responseType: 'json',
+      }
+    );
   }
 }
