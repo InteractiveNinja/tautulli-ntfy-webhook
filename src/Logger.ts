@@ -1,13 +1,19 @@
-import { Logger as WinstonLogger, createLogger, transports, format } from 'winston';
+import { createLogger, format, Logger as WinstonLogger, transports } from 'winston';
+
 export class Logger {
   private static instance: Logger;
   private readonly logger: WinstonLogger;
 
   private constructor() {
+    const myFormat = format.printf(({ level, message, timestamp }) => {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      return `${timestamp}: [${level}] ${message}`;
+    });
+
     this.logger = createLogger({
-      format: format.simple(),
+      format: format.combine(format.timestamp(), myFormat),
       level: 'info',
-      transports: [new transports.Console()],
+      transports: [new transports.Console({})],
     });
   }
 
