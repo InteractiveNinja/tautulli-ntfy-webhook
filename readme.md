@@ -24,11 +24,14 @@
 "title": "{title}",
 "name": "{episode_count} Episoden wurden hinzugefügt",
 </season>
+<show>
+"title": "{title}",
+"name": "{season_count} Staffeln wurden hinzugefügt",
+</show>
 <episode>
 "name": "{episode_name}",
 "title": "{show_name}",
 </episode>
 "poster": "{poster_thumb}"
-
 }
 ```
