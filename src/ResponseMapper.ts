@@ -1,6 +1,7 @@
 import { Config, Configuration } from './Config';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import * as https from 'https';
+import { Logger } from './Logger';
 
 interface TautulliResponse {
   media_type: string;
@@ -21,7 +22,7 @@ interface NtfyAddMediaResponse extends NtfyBaseResponse {
 
 export class ResponseMapper {
   private readonly configuration: Configuration;
-
+  private readonly logger = Logger.getLogger();
   constructor(private readonly config: Config) {
     this.configuration = config.getConfigration();
   }
@@ -37,25 +38,41 @@ export class ResponseMapper {
           message: tautulliResponse.name,
         };
         resolve(ntfyResposne);
+      } else {
+        const errorMsg = 'Tautulli Webhook Response was expected in other format';
+        this.logger.error(errorMsg);
+        reject(new Error(errorMsg));
       }
-      reject(new Error('Tautulli Webhook Response is expected in this format'));
     });
   }
 
   public async sendNtfyResponse(payload: NtfyBaseResponse): Promise<void> {
-    console.log(`Sending Response to ${this.configuration.NTFY_URL} topic: ${this.configuration.NTFY_TOPIC}`);
-    return await axios.post(
-      this.configuration.NTFY_URL,
-      {
-        ...payload,
-      },
-      {
-        // Disable Cert Verification for self-signed certs
-        httpsAgent: new https.Agent({
-          rejectUnauthorized: false,
-        }),
-        responseType: 'json',
-      }
+    this.logger.info(
+      `Trying sending notification to ${this.configuration.NTFY_URL} with topic: ${this.configuration.NTFY_TOPIC}`
     );
+    return await new Promise((resolve, reject) => {
+      axios
+        .post(
+          this.configuration.NTFY_URL,
+          {
+            ...payload,
+          },
+          {
+            // Disable Cert Verification for self-signed certs
+            httpsAgent: new https.Agent({
+              rejectUnauthorized: false,
+            }),
+            responseType: 'json',
+          }
+        )
+        .then(() => {
+          this.logger.info('Sending Successful');
+          resolve();
+        })
+        .catch((err: AxiosError) => {
+          this.logger.error(`Error sending Request to ntfy Server: ${err.message}`);
+          reject(new Error(err.message));
+        });
+    });
   }
 }

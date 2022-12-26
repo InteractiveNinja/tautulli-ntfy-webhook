@@ -1,3 +1,5 @@
+import { Logger } from './Logger';
+
 export interface Configuration {
   NTFY_URL: string;
   NTFY_TOPIC: string;
@@ -11,13 +13,16 @@ export interface Config {
 export class ConfigImpl {
   private static readonly instance = new ConfigImpl();
   private readonly configuration: Configuration;
+  private readonly logger = Logger.getLogger();
   private constructor() {
     const { NTFY_URL, NTFY_TOPIC, POSTER_TOKEN } = process.env;
 
     if (NTFY_TOPIC != null && NTFY_URL != null && POSTER_TOKEN != null) {
       this.configuration = { NTFY_TOPIC, NTFY_URL, POSTER_TOKEN };
     } else {
-      throw new Error('Configration is not set. Check .env File');
+      const errorMsg = 'Configration is not set. Check .env File';
+      this.logger.error(errorMsg);
+      throw new Error(errorMsg);
     }
   }
 
