@@ -3,6 +3,7 @@ import 'dotenv/config';
 import { ConfigImpl } from './Config';
 import { ResponseMapper } from './ResponseMapper';
 import { Logger } from './Logger';
+import { supportedMediaTypes } from './SupportedMediaTypes';
 
 const app = express();
 
@@ -18,6 +19,8 @@ app.get('/status', (req: Request, res: Response) => {
   logger.info(`Receiving status check from ${req.ip}`);
   res.sendStatus(200);
 });
+
+app.use(supportedMediaTypes);
 
 app.post('/addMedia', (req: Request, res: Response) => {
   ntfyResponseMapper
