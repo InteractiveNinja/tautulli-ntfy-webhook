@@ -13,8 +13,15 @@ export class Logger {
     this.logger = createLogger({
       format: format.combine(format.timestamp(), myFormat),
       level: 'info',
-      transports: [new transports.Console({})],
+      transports: [],
     });
+
+    if (process.env.NODE_ENV === 'production') {
+      this.logger.add(new transports.Console());
+    } else {
+      this.logger.add(new transports.Console({ level: 'verbose' }));
+      this.logger.verbose('Verbose Logging enabled');
+    }
   }
 
   public static getLogger(): WinstonLogger {
