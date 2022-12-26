@@ -16,7 +16,7 @@ app.get('status', (req: Request, res: Response) => {
   res.sendStatus(200);
 });
 
-app.post('/hook', (req: Request, res: Response) => {
+app.post('/addMedia', (req: Request, res: Response) => {
   ntfyResponseMapper
     .createNtfyResponse(req.body)
     .then(async (ntfyResponse) => await ntfyResponseMapper.sendNtfyResponse(ntfyResponse))
