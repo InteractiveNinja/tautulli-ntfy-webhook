@@ -13,7 +13,7 @@ app.use(express.json());
 const configReader = ConfigImpl.getConfig();
 const ntfyResponseMapper = new ResponseMapper(configReader);
 
-app.get('status', (req: Request, res: Response) => {
+app.get('/status', (req: Request, res: Response) => {
   res.sendStatus(200);
 });
 
