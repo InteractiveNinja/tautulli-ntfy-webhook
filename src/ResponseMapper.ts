@@ -1,8 +1,8 @@
 import axios, { AxiosError } from 'axios';
 import * as https from 'https';
 import { Logger } from './Logger';
-import {Configuration} from "./interface/configuration";
-import {ConfigLoader} from "./config-loader";
+import { Configuration } from './interface/configuration';
+import { ConfigLoader } from './config-loader';
 
 interface TautulliResponse {
   media_type: string;
