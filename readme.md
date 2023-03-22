@@ -4,6 +4,8 @@
 
 # Configration .env File
 
+`PORT` Port for the Webhook defaults to `3000`
+
 `NTFY_URL` URL to NTFY Server
 
 `NTFY_TOPIC` Topic where Notifications are sent
