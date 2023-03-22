@@ -1,7 +1,8 @@
-import { Config, Configuration } from './Config';
 import axios, { AxiosError } from 'axios';
 import * as https from 'https';
 import { Logger } from './Logger';
+import {Configuration} from "./interface/configuration";
+import {ConfigLoader} from "./config-loader";
 
 interface TautulliResponse {
   media_type: string;
@@ -23,7 +24,7 @@ interface NtfyAddMediaResponse extends NtfyBaseResponse {
 export class ResponseMapper {
   private readonly configuration: Configuration;
   private readonly logger = Logger.getLogger();
-  constructor(private readonly config: Config) {
+  constructor(private readonly config: ConfigLoader) {
     this.configuration = config.getConfigration();
   }
 

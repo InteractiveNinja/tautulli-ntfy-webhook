@@ -1,17 +1,8 @@
-import { Logger } from './Logger';
+import {Logger} from './Logger';
+import {Configuration} from "./interface/configuration";
 
-export interface Configuration {
-  NTFY_URL: string;
-  NTFY_TOPIC: string;
-  POSTER_TOKEN: string;
-}
-
-export interface Config {
-  getConfigration: () => Configuration;
-}
-
-export class ConfigImpl {
-  private static readonly instance = new ConfigImpl();
+export class ConfigLoader {
+  private static readonly instance = new ConfigLoader();
   private readonly configuration: Configuration;
   private readonly logger = Logger.getLogger();
   private constructor() {
@@ -30,7 +21,7 @@ export class ConfigImpl {
     return this.configuration;
   }
 
-  public static getConfig(): Config {
+  public static getInstance(): ConfigLoader {
     return this.instance;
   }
 }

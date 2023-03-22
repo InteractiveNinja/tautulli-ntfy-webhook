@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import 'dotenv/config';
-import { ConfigImpl } from './Config';
+import { ConfigLoader } from './config-loader';
 import { ResponseMapper } from './ResponseMapper';
 import { Logger } from './Logger';
 import { supportedMediaTypes } from './SupportedMediaTypes';
@@ -11,7 +11,7 @@ const { PORT = 3000 } = process.env;
 
 app.use(express.json());
 
-const configReader = ConfigImpl.getConfig();
+const configReader = ConfigLoader.getInstance();
 const ntfyResponseMapper = new ResponseMapper(configReader);
 const logger = Logger.getLogger();
 
