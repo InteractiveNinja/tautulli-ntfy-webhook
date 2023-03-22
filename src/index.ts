@@ -1,5 +1,4 @@
 import express, { Request, Response } from 'express';
-import 'dotenv/config';
 import { ConfigLoader } from './config-loader';
 import { ResponseMapper } from './ResponseMapper';
 import { Logger } from './Logger';
@@ -7,13 +6,13 @@ import { supportedMediaTypes } from './SupportedMediaTypes';
 
 const app = express();
 
-const { PORT = 3000 } = process.env;
-
 app.use(express.json());
 
 const configReader = ConfigLoader.getInstance();
 const ntfyResponseMapper = new ResponseMapper(configReader);
 const logger = Logger.getLogger();
+
+const { PORT } = configReader.getConfigration();
 
 app.get('/status', (req: Request, res: Response) => {
   logger.info(`Receiving status check from ${req.ip}`);
