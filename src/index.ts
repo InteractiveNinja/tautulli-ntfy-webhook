@@ -4,14 +4,15 @@ import { ConfigLoader } from './config-loader';
 import { ResponseMapper } from './ResponseMapper';
 import { Logger } from './Logger';
 import { supportedMediaTypes } from './SupportedMediaTypes';
+import { Container } from 'typedi';
 
 const app = express();
 
 app.use(express.json());
 
-const configReader = ConfigLoader.getInstance();
-const ntfyResponseMapper = new ResponseMapper(configReader);
-const logger = Logger.getLogger();
+const configReader = Container.get(ConfigLoader);
+const ntfyResponseMapper = Container.get(ResponseMapper);
+const logger = Container.get(Logger);
 
 const { PORT } = configReader.getConfigration();
 

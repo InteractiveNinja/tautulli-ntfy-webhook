@@ -1,13 +1,13 @@
 import 'dotenv/config';
 import { Logger } from './Logger';
 import { Configuration } from './interface/configuration';
+import { Service } from 'typedi';
 
+@Service()
 export class ConfigLoader {
-  private static readonly instance = new ConfigLoader();
   private readonly configuration: Configuration;
-  private readonly logger = Logger.getLogger();
 
-  private constructor() {
+  constructor(private readonly logger: Logger) {
     const { NTFY_URL, NTFY_TOPIC, POSTER_TOKEN, PORT } = this.checkRequiredConfig();
     this.configuration = {
       NTFY_TOPIC,
@@ -15,10 +15,6 @@ export class ConfigLoader {
       POSTER_TOKEN,
       PORT,
     };
-  }
-
-  public static getInstance(): ConfigLoader {
-    return this.instance;
   }
 
   public getConfigration(): Configuration {

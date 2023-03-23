@@ -3,6 +3,7 @@ import * as https from 'https';
 import { Logger } from './Logger';
 import { Configuration } from './interface/configuration';
 import { ConfigLoader } from './config-loader';
+import { Service } from 'typedi';
 
 interface TautulliResponse {
   media_type: string;
@@ -21,10 +22,11 @@ interface NtfyAddMediaResponse extends NtfyBaseResponse {
   attach: string;
 }
 
+@Service()
 export class ResponseMapper {
   private readonly configuration: Configuration;
-  private readonly logger = Logger.getLogger();
-  constructor(private readonly config: ConfigLoader) {
+
+  constructor(private readonly config: ConfigLoader, private readonly logger: Logger) {
     this.configuration = config.getConfigration();
   }
 

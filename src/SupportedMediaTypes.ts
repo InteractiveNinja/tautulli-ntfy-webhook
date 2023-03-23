@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { Logger } from './Logger';
+import { Container } from 'typedi';
 
 enum MediaTypes {
   MOVIE = 'movie',
@@ -12,7 +13,7 @@ enum MediaTypes {
 }
 
 const supportedMediaTypesArray = [MediaTypes.EPISODE, MediaTypes.MOVIE, MediaTypes.SEASON, MediaTypes.SHOW];
-const logger = Logger.getLogger();
+const logger = Container.get(Logger);
 export const supportedMediaTypes = (
   request: Request<{ media_type: string }>,
   response: Response,
