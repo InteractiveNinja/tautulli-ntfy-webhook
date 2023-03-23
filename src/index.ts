@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import express, { Request, Response } from 'express';
 import { ConfigLoader } from './config-loader';
 import { ResponseMapper } from './ResponseMapper';

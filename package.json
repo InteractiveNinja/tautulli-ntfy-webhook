@@ -18,6 +18,8 @@
     "axios": "^1.2.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "reflect-metadata": "^0.1.13",
+    "typedi": "^0.10.0",
     "winston": "^3.8.2"
   },
   "devDependencies": {
