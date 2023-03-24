@@ -4,23 +4,7 @@ import { Logger } from './Logger';
 import { Configuration } from './interface/configuration';
 import { ConfigLoader } from './config-loader';
 import { Service } from 'typedi';
-
-interface TautulliResponse {
-  media_type: string;
-  title: string;
-  name?: string;
-  poster: string;
-}
-
-interface NtfyBaseResponse {
-  topic: string;
-  message?: string;
-  title: string;
-}
-
-interface NtfyAddMediaResponse extends NtfyBaseResponse {
-  attach: string;
-}
+import { TautulliResponse, NtfyAddMediaResponse, NtfyBaseResponse } from './interface/media-types';
 
 @Service()
 export class ResponseMapper {
