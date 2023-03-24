@@ -1,37 +1,70 @@
-## Tautulli 2 ntfy.sh
 
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
-# Configration .env File
+# Tautulli 2 ntfy.sh
+
+A Webservice which translates a Webhook call from Tautulli to an ntfy Server.
+
+
+## Features
+
+- Send Tautulli Webhooks to ntfy
+- Free choice of ntfy topic
+- Send Poster URL for Webhook request
+
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file or in the docker environment
 
 `NTFY_URL` URL to NTFY Server
 
-`NTFY_TOPIC` Topic where Notifications are sent
+`NTFY_TOPIC` Topic where notifications are sent
 
-`POSTER_TOKEN` Token from Plex Server which returns Poster of a Library Item
+`POSTER_TOKEN` Token for creating a Poster Link
 
-`https://{server-ip}.{identifier}.plex.direct:32400/photo/:/transcode?width=720&height=1080&minSize=1&upscale=1&url=~?X-Plex-Token={plex-token}&X-Plex-Token={plex-token}`
 
-## Tautulli Webhook
 
+## Building the Docker Image
+
+
+```bash
+  docker build . -t tautulli2ntfy
 ```
-{
-"media_type": "{media_type}",
-<movie>
-"title": "{title}",
-</movie>
-<season>
-"title": "{title}",
-"name": "{episode_count} Episoden wurden hinzugefügt",
-</season>
-<show>
-"title": "{title}",
-"name": "{season_count} Staffeln wurden hinzugefügt",
-</show>
-<episode>
-"name": "{episode_name}",
-"title": "{show_name}",
-</episode>
-"poster": "{poster_thumb}"
-}
+    
+## Deployment
+
+To deploy this project, build the Docker Image and run with docker-compose
+
+```bash
+version: "3.0"
+services:
+  tautulli2ntfy:
+    image: tautulli2ntfy
+    environment:
+      - NTFY_TOPIC="your topic"
+      - NTFY_URL="your ntfy server"
+      - POSTER_TOKEN="your poster token"
+    ports:
+      - 3000:3000
+    restart: always
 ```
+
+
+## Documentation
+
+`TODO`
+
+
+## Appendix
+
+#### How to create a `POSTER_TOKEN` URL
+
+`TODO`
+
+
+## Contributing
+
+Contributions are always welcome!
+
+
