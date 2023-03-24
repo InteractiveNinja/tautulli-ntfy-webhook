@@ -5,6 +5,8 @@ import { ResponseMapper } from './ResponseMapper';
 import { Logger } from './Logger';
 import { supportedMediaTypes } from './SupportedMediaTypes';
 import { Container } from 'typedi';
+import { TypedRequest } from './util/typed-request';
+import { TautulliResponse } from './interface/media-types';
 
 const app = express();
 
@@ -23,7 +25,7 @@ app.get('/status', (req: Request, res: Response) => {
 
 app.use(supportedMediaTypes);
 
-app.post('/addMedia', (req: Request, res: Response) => {
+app.post('/addMedia', (req: TypedRequest<TautulliResponse>, res: Response) => {
   ntfyResponseMapper
     .createAddMediaNtfyResponse(req.body)
     .then(async (ntfyResponse) => await ntfyResponseMapper.sendNtfyResponse(ntfyResponse))
