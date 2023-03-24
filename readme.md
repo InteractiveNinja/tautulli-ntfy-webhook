@@ -1,17 +1,14 @@
-
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 # Tautulli 2 ntfy.sh
 
 A Webservice which translates a Webhook call from Tautulli to an ntfy Server.
 
-
 ## Features
 
 - Send Tautulli Webhooks to ntfy
 - Free choice of ntfy topic
 - Send Poster URL for Webhook request
-
 
 ## Environment Variables
 
@@ -23,15 +20,12 @@ To run this project, you will need to add the following environment variables to
 
 `POSTER_TOKEN` Token for creating a Poster Link
 
-
-
 ## Building the Docker Image
-
 
 ```bash
   docker build . -t tautulli2ntfy
 ```
-    
+
 ## Deployment
 
 To deploy this project, build the Docker Image and run with docker-compose
@@ -50,11 +44,9 @@ services:
     restart: always
 ```
 
-
 ## Documentation
 
 `TODO`
-
 
 ## Appendix
 
@@ -62,9 +54,6 @@ services:
 
 `TODO`
 
-
 ## Contributing
 
 Contributions are always welcome!
-
-
