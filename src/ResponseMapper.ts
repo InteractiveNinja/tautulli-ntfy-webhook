@@ -63,8 +63,10 @@ export class ResponseMapper {
           },
           {
             // Disable Cert Verification for self-signed certs
-            httpsAgent: new https.Agent({
-              rejectUnauthorized: false,
+            ...(this.configuration.IGNORE_SSL_CERT && {
+              httpsAgent: new https.Agent({
+                rejectUnauthorized: false,
+              }),
             }),
             responseType: 'json',
           }

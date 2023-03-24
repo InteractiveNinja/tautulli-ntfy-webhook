@@ -22,6 +22,8 @@ To run this project, you will need to add the following environment variables to
 
 `POSTER_TOKEN` Token for creating a Poster Link
 
+`IGNORE_SSL_CERT` Disable ssl cert verification
+
 ## Building the Docker Image
 
 ```bash
