@@ -3,20 +3,11 @@ import { Logger } from './Logger';
 import { Container } from 'typedi';
 import { TautulliResponse } from './interface/media-types';
 import { TypedRequest } from './util/typed-request';
+import { MediaTypes } from './enum/mediaTypes';
 
-enum MediaTypes {
-  MOVIE = 'movie',
-  SHOW = 'show',
-  SEASON = 'season',
-  EPISODE = 'episode',
-  ARTIST = 'artist',
-  TRACK = 'track',
-  ALBUM = 'album',
-}
-
-const supportedMediaTypesArray = [MediaTypes.EPISODE, MediaTypes.MOVIE, MediaTypes.SEASON, MediaTypes.SHOW];
+const supportedMediaTypes = [MediaTypes.EPISODE, MediaTypes.MOVIE, MediaTypes.SEASON, MediaTypes.SHOW];
 const logger = Container.get(Logger);
-export const supportedMediaTypes = (
+export const supportedMediaTypesMiddleware = (
   request: TypedRequest<TautulliResponse>,
   response: Response,
   next: NextFunction
@@ -25,7 +16,7 @@ export const supportedMediaTypes = (
   const { media_type } = request.body;
 
   logger.verbose(`Getting Webhook Request for ${media_type}`);
-  if (supportedMediaTypesArray.includes(media_type as MediaTypes)) {
+  if (supportedMediaTypes.includes(media_type as MediaTypes)) {
     logger.verbose(`Passing Webhook Request for ${media_type}`);
     next();
   } else {

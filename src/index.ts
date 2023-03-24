@@ -3,7 +3,7 @@ import express, { Request, Response } from 'express';
 import { ConfigLoader } from './config-loader';
 import { ResponseMapper } from './ResponseMapper';
 import { Logger } from './Logger';
-import { supportedMediaTypes } from './SupportedMediaTypes';
+import { supportedMediaTypesMiddleware } from './supportedMediaTypesMiddleware';
 import { Container } from 'typedi';
 import { TypedRequest } from './util/typed-request';
 import { TautulliResponse } from './interface/media-types';
@@ -23,7 +23,7 @@ app.get('/status', (req: Request, res: Response) => {
   res.sendStatus(200);
 });
 
-app.use(supportedMediaTypes);
+app.use(supportedMediaTypesMiddleware);
 
 app.post('/addMedia', (req: TypedRequest<TautulliResponse>, res: Response) => {
   ntfyResponseMapper
