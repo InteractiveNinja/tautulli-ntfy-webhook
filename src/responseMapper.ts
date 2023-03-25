@@ -2,9 +2,9 @@ import axios, { AxiosError } from 'axios';
 import * as https from 'https';
 import { Logger } from './Logger';
 import { Configuration } from './interface/configuration';
-import { ConfigLoader } from './config-loader';
+import { ConfigLoader } from './configLoader';
 import { Service } from 'typedi';
-import { TautulliResponse, NtfyAddMediaResponse, NtfyBaseResponse } from './interface/media-types';
+import { NtfyResponse, TautulliResponse } from './interface/mediaTypes';
 
 @Service()
 export class ResponseMapper {
@@ -14,11 +14,11 @@ export class ResponseMapper {
     this.configuration = config.getConfigration();
   }
 
-  public async createAddMediaNtfyResponse(tautulliResponse: TautulliResponse): Promise<NtfyAddMediaResponse> {
-    return await new Promise<NtfyAddMediaResponse>((resolve, reject) => {
+  public async createAddMediaNtfyResponse(tautulliResponse: TautulliResponse): Promise<NtfyResponse> {
+    return await new Promise<NtfyResponse>((resolve, reject) => {
       const [beforeUrl, afterUrl] = this.configuration.POSTER_TOKEN.split('~');
       if (tautulliResponse.poster != null && tautulliResponse.title != null) {
-        const ntfyResposne: NtfyAddMediaResponse = {
+        const ntfyResposne: NtfyResponse = {
           attach: `${beforeUrl}${tautulliResponse.poster}${afterUrl}`,
           title: tautulliResponse.title,
           topic: this.configuration.NTFY_TOPIC,
@@ -33,7 +33,7 @@ export class ResponseMapper {
     });
   }
 
-  public async sendNtfyResponse(payload: NtfyBaseResponse): Promise<void> {
+  public async sendNtfyResponse(payload: NtfyResponse): Promise<void> {
     this.logger.verbose(
       `Trying sending notification to ${this.configuration.NTFY_URL} with topic: ${this.configuration.NTFY_TOPIC}`
     );

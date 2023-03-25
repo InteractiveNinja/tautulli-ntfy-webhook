@@ -1,8 +1,8 @@
 import { NextFunction, Response } from 'express';
 import { Logger } from './Logger';
 import { Container } from 'typedi';
-import { TautulliResponse } from './interface/media-types';
-import { TypedRequest } from './util/typed-request';
+import { TautulliResponse } from './interface/mediaTypes';
+import { TypedRequest } from './util/typedRequest';
 import { MediaTypes } from './enum/mediaTypes';
 
 const supportedMediaTypes = [MediaTypes.EPISODE, MediaTypes.MOVIE, MediaTypes.SEASON, MediaTypes.SHOW];

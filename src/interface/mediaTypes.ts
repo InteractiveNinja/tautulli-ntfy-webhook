@@ -5,12 +5,9 @@ export interface TautulliResponse {
   poster: string;
 }
 
-export interface NtfyBaseResponse {
+export interface NtfyResponse {
   topic: string;
   message?: string;
   title: string;
-}
-
-export interface NtfyAddMediaResponse extends NtfyBaseResponse {
-  attach: string;
+  attach?: string;
 }

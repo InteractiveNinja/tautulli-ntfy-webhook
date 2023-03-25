@@ -1,12 +1,12 @@
 import 'reflect-metadata';
 import express, { Request, Response } from 'express';
-import { ConfigLoader } from './config-loader';
+import { ConfigLoader } from './configLoader';
 import { ResponseMapper } from './ResponseMapper';
 import { Logger } from './Logger';
 import { supportedMediaTypesMiddleware } from './supportedMediaTypesMiddleware';
 import { Container } from 'typedi';
-import { TypedRequest } from './util/typed-request';
-import { TautulliResponse } from './interface/media-types';
+import { TypedRequest } from './util/typedRequest';
+import { TautulliResponse } from './interface/mediaTypes';
 
 const app = express();
 
