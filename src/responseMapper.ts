@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import * as https from 'https';
 import { Logger } from './Logger';
 import { Configuration } from './interface/configuration';
@@ -10,7 +10,7 @@ import { NtfyResponse, TautulliResponse } from './interface/mediaTypes';
 export class ResponseMapper {
   private readonly configuration: Configuration;
 
-  constructor(private readonly config: ConfigLoader, private readonly logger: Logger) {
+  constructor(readonly config: ConfigLoader, private readonly logger: Logger) {
     this.configuration = config.getConfigration();
   }
 
@@ -45,15 +45,7 @@ export class ResponseMapper {
           {
             ...payload,
           },
-          {
-            // Disable Cert Verification for self-signed certs
-            ...(this.configuration.IGNORE_SSL_CERT && {
-              httpsAgent: new https.Agent({
-                rejectUnauthorized: false,
-              }),
-            }),
-            responseType: 'json',
-          }
+          this.createRequestConfig(this.configuration.IGNORE_SSL_CERT, this.configuration.NTFY_TOKEN)
         )
         .then(() => {
           this.logger.verbose('Sending Successful');
@@ -64,5 +56,28 @@ export class ResponseMapper {
           reject(new Error(err.message));
         });
     });
+  }
+
+  private createRequestConfig(ignoreSslCert: boolean, ntfyAccessToken?: string): AxiosRequestConfig {
+    // Disable Cert Verification for self-signed certs
+    const ignoreSslCertificate: AxiosRequestConfig = {
+      ...(ignoreSslCert && {
+        httpsAgent: new https.Agent({
+          rejectUnauthorized: false,
+        }),
+      }),
+    };
+    const authorization: AxiosRequestConfig = {
+      ...(ntfyAccessToken !== undefined && {
+        headers: {
+          Authorization: `Bearer ${ntfyAccessToken}`,
+        },
+      }),
+    };
+    const responseType: AxiosRequestConfig = {
+      responseType: 'json',
+    };
+
+    return { ...ignoreSslCertificate, ...authorization, ...responseType };
   }
 }

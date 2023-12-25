@@ -8,7 +8,7 @@ export class ConfigLoader {
   private readonly configuration: Configuration;
 
   constructor(private readonly logger: Logger) {
-    const { NTFY_URL, NTFY_TOPIC, POSTER_TOKEN, PORT, IGNORE_SSL_CERT } = this.checkRequiredConfig();
+    const { NTFY_URL, NTFY_TOPIC, NTFY_TOKEN, POSTER_TOKEN, PORT, IGNORE_SSL_CERT } = this.checkRequiredConfig();
     this.configuration = {
       NTFY_TOPIC,
       NTFY_URL,
@@ -23,7 +23,7 @@ export class ConfigLoader {
   }
 
   private checkRequiredConfig(): Configuration {
-    const { NTFY_URL, NTFY_TOPIC, POSTER_TOKEN, PORT, IGNORE_SSL_CERT } = process.env;
+    const { NTFY_URL, NTFY_TOPIC, NTFY_TOKEN, POSTER_TOKEN, PORT, IGNORE_SSL_CERT } = process.env;
 
     const missingConfigurations: string[] = [];
     if (NTFY_TOPIC == null) {
@@ -48,6 +48,7 @@ export class ConfigLoader {
       POSTER_TOKEN: POSTER_TOKEN as string,
       PORT: PORT != null ? parseInt(PORT) : 3000,
       IGNORE_SSL_CERT: !(IGNORE_SSL_CERT == null),
+      NTFY_TOKEN: NTFY_TOKEN as string
     };
   }
 }
