@@ -1,5 +1,5 @@
 import { NextFunction, Response } from 'express';
-import { Logger } from './Logger';
+import { Logger } from './logger';
 import { Container } from 'typedi';
 import { TautulliResponse } from './model/responseModel';
 import { TypedRequest } from './model/typedRequest';
