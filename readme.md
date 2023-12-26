@@ -14,11 +14,17 @@ A Webservice which translates a Webhook call from Tautulli to an ntfy Server.
 
 To run this project, you will need to add the following environment variables to your .env file or in the docker environment
 
+`PORT` Port for the Webhook defaults to `3000`
+
 `NTFY_URL` URL to NTFY Server
 
 `NTFY_TOPIC` Topic where notifications are sent
 
+`NTFY_TOKEN` Access token for ntfy
+
 `POSTER_TOKEN` Token for creating a Poster Link
+
+`IGNORE_SSL_CERT` Disable ssl cert verification
 
 ## Building the Docker Image
 

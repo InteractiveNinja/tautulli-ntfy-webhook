@@ -1,37 +1,36 @@
+import 'reflect-metadata';
 import express, { Request, Response } from 'express';
-import 'dotenv/config';
-import { ConfigImpl } from './Config';
-import { ResponseMapper } from './ResponseMapper';
-import { Logger } from './Logger';
-import { supportedMediaTypes } from './SupportedMediaTypes';
+import { ConfigLoader } from './configLoader';
+import { mediaTypesMiddleware } from './mediaTypesMiddleware';
+import { Container } from 'typedi';
+import { TypedRequest } from './model/typedRequest';
+import { TautulliResponse } from './model/responseModel';
+import { ResponseMapper } from './responseMapper';
+import { Logger } from './logger';
 
 const app = express();
 
-const { PORT = 3000 } = process.env;
-
 app.use(express.json());
 
-const configReader = ConfigImpl.getConfig();
-const ntfyResponseMapper = new ResponseMapper(configReader);
-const logger = Logger.getLogger();
+const configReader = Container.get(ConfigLoader);
+const ntfyResponseMapper = Container.get(ResponseMapper);
+const logger = Container.get(Logger);
+
+const { PORT } = configReader.getConfigration();
 
 app.get('/status', (req: Request, res: Response) => {
   logger.info(`Receiving status check from ${req.ip}`);
   res.sendStatus(200);
 });
 
-app.use(supportedMediaTypes);
+app.use(mediaTypesMiddleware);
 
-app.post('/addMedia', (req: Request, res: Response) => {
+app.post('/addMedia', (req: TypedRequest<TautulliResponse>, res: Response) => {
   ntfyResponseMapper
     .createAddMediaNtfyResponse(req.body)
     .then(async (ntfyResponse) => await ntfyResponseMapper.sendNtfyResponse(ntfyResponse))
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((err: Error) => {
-      res.status(500).send(err.message);
-    });
+    .then(() => res.sendStatus(200))
+    .catch((err: Error) => res.status(500).send(err.message));
 });
 
 app.listen(PORT, () => {

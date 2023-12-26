@@ -1,10 +1,11 @@
 import { createLogger, format, Logger as WinstonLogger, transports } from 'winston';
+import { Service } from 'typedi';
 
+@Service()
 export class Logger {
-  private static instance: Logger;
   private readonly logger: WinstonLogger;
 
-  private constructor() {
+  constructor() {
     const myFormat = format.printf(({ level, message, timestamp }) => {
       // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       return `${timestamp}: [${level}] ${message}`;
@@ -24,11 +25,20 @@ export class Logger {
     }
   }
 
-  public static getLogger(): WinstonLogger {
-    if (this.instance === undefined) {
-      this.instance = new Logger();
-    }
+  public error(msg: string): Error {
+    this.logger.error(msg);
+    return new Error(msg);
+  }
 
-    return this.instance.logger;
+  public warn(msg: string): void {
+    this.logger.warn(msg);
+  }
+
+  public info(msg: string): void {
+    this.logger.info(msg);
+  }
+
+  public verbose(msg: string): void {
+    this.logger.verbose(msg);
   }
 }

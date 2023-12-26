@@ -14,7 +14,7 @@ pipeline {
                 nodejs('node') {
                     sh 'npm ci'
                     sh 'npm run checkstyle'
-                    sh 'npm run check'
+                    sh 'npm run lint'
                     sh 'npm run build'
                 }
             }
