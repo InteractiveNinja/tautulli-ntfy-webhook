@@ -29,12 +29,8 @@ app.post('/addMedia', (req: TypedRequest<TautulliResponse>, res: Response) => {
   ntfyResponseMapper
     .createAddMediaNtfyResponse(req.body)
     .then(async (ntfyResponse) => await ntfyResponseMapper.sendNtfyResponse(ntfyResponse))
-    .then(() => {
-      res.sendStatus(200);
-    })
-    .catch((err: Error) => {
-      res.status(500).send(err.message);
-    });
+    .then(() => res.sendStatus(200))
+    .catch((err: Error) => res.status(500).send(err.message));
 });
 
 app.listen(PORT, () => {
