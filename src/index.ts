@@ -1,12 +1,12 @@
 import 'reflect-metadata';
 import express, { Request, Response } from 'express';
 import { ConfigLoader } from './configLoader';
-import { ResponseMapper } from './ResponseMapper';
-import { Logger } from './Logger';
-import { supportedMediaTypesMiddleware } from './supportedMediaTypesMiddleware';
+import { mediaTypesMiddleware } from './mediaTypesMiddleware';
 import { Container } from 'typedi';
-import { TypedRequest } from './util/typedRequest';
-import { TautulliResponse } from './interface/mediaTypes';
+import { TypedRequest } from './model/typedRequest';
+import { TautulliResponse } from './model/responseModel';
+import { ResponseMapper } from './responseMapper';
+import { Logger } from './logger';
 
 const app = express();
 
@@ -23,7 +23,7 @@ app.get('/status', (req: Request, res: Response) => {
   res.sendStatus(200);
 });
 
-app.use(supportedMediaTypesMiddleware);
+app.use(mediaTypesMiddleware);
 
 app.post('/addMedia', (req: TypedRequest<TautulliResponse>, res: Response) => {
   ntfyResponseMapper

@@ -1,10 +1,10 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import * as https from 'https';
-import { Logger } from './Logger';
-import { Configuration } from './interface/configuration';
+import { Configuration } from './model/configuration';
 import { ConfigLoader } from './configLoader';
 import { Service } from 'typedi';
-import { NtfyResponse, TautulliResponse } from './interface/mediaTypes';
+import { NtfyResponse, TautulliResponse } from './model/responseModel';
+import { Logger } from './logger';
 
 @Service()
 export class ResponseMapper {

@@ -1,13 +1,13 @@
 import 'dotenv/config';
-import { Logger } from './Logger';
 import {
   Configuration,
   ConfigurationKeys,
   hasAllRequiredConfigurationKeys,
   requiredConfigurationKeys,
-} from './interface/configuration';
+} from './model/configuration';
 import { Service } from 'typedi';
 import _ from 'lodash';
+import { Logger } from './logger';
 
 @Service()
 export class ConfigLoader {

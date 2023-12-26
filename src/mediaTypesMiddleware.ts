@@ -1,13 +1,13 @@
 import { NextFunction, Response } from 'express';
 import { Logger } from './Logger';
 import { Container } from 'typedi';
-import { TautulliResponse } from './interface/mediaTypes';
-import { TypedRequest } from './util/typedRequest';
-import { MediaTypes } from './enum/mediaTypes';
+import { TautulliResponse } from './model/responseModel';
+import { TypedRequest } from './model/typedRequest';
+import { MediaTypes } from './model/mediaTypes';
 
 const supportedMediaTypes = [MediaTypes.EPISODE, MediaTypes.MOVIE, MediaTypes.SEASON, MediaTypes.SHOW];
 const logger = Container.get(Logger);
-export const supportedMediaTypesMiddleware = (
+export const mediaTypesMiddleware = (
   request: TypedRequest<TautulliResponse>,
   response: Response,
   next: NextFunction
