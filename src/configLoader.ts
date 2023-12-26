@@ -1,17 +1,24 @@
 import 'dotenv/config';
 import { Logger } from './Logger';
-import { Configuration } from './interface/configuration';
+import {
+  Configuration,
+  ConfigurationKeys,
+  hasAllRequiredConfigurationKeys,
+  requiredConfigurationKeys,
+} from './interface/configuration';
 import { Service } from 'typedi';
+import _ from 'lodash';
 
 @Service()
 export class ConfigLoader {
   private readonly configuration: Configuration;
 
   constructor(private readonly logger: Logger) {
-    const { NTFY_URL, NTFY_TOPIC, NTFY_TOKEN, POSTER_TOKEN, PORT, IGNORE_SSL_CERT } = this.checkRequiredConfig();
+    const { NTFY_URL, NTFY_TOPIC, NTFY_TOKEN, POSTER_TOKEN, PORT, IGNORE_SSL_CERT } = this.buildConfiguration();
     this.configuration = {
       NTFY_TOPIC,
       NTFY_URL,
+      NTFY_TOKEN,
       POSTER_TOKEN,
       PORT,
       IGNORE_SSL_CERT,
@@ -22,33 +29,22 @@ export class ConfigLoader {
     return this.configuration;
   }
 
-  private checkRequiredConfig(): Configuration {
-    const { NTFY_URL, NTFY_TOPIC, NTFY_TOKEN, POSTER_TOKEN, PORT, IGNORE_SSL_CERT } = process.env;
+  private buildConfiguration(): Configuration {
+    const envValues = process.env;
+    const envConfiguration: Partial<Configuration> = _.values(ConfigurationKeys).reduce(
+      (previousValue, currentValue) => {
+        return { ...previousValue, [currentValue]: envValues[currentValue] };
+      },
+      {}
+    );
 
-    const missingConfigurations: string[] = [];
-    if (NTFY_TOPIC == null) {
-      missingConfigurations.push('NTFY_TOPIC');
+    if (!hasAllRequiredConfigurationKeys(envConfiguration)) {
+      const undefinedConfigurations = _.entries(envConfiguration)
+        .filter(([, value]) => _.isUndefined(value))
+        .map(([key]) => key);
+      const missingKeys = requiredConfigurationKeys.filter((key) => undefinedConfigurations.includes(key));
+      this.logger.error(`Missing Configuration, please check configuration. Missing Keys: ${missingKeys.join(',')}`);
     }
-
-    if (NTFY_URL == null) {
-      missingConfigurations.push('NTFY_URL');
-    }
-    if (POSTER_TOKEN == null) {
-      missingConfigurations.push('POSTER_TOKEN');
-    }
-    if (missingConfigurations.length !== 0) {
-      const errorMsg = `Required Configration is not set. Missing: ${missingConfigurations.join(' ')}`;
-      this.logger.error(errorMsg);
-      throw new Error(errorMsg);
-    }
-
-    return {
-      NTFY_URL: NTFY_URL as string,
-      NTFY_TOPIC: NTFY_TOPIC as string,
-      POSTER_TOKEN: POSTER_TOKEN as string,
-      PORT: PORT != null ? parseInt(PORT) : 3000,
-      IGNORE_SSL_CERT: !(IGNORE_SSL_CERT == null),
-      NTFY_TOKEN: NTFY_TOKEN as string
-    };
+    return envConfiguration;
   }
 }
