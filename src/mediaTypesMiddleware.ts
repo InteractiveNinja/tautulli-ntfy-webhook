@@ -3,9 +3,8 @@ import { Logger } from './logger';
 import { Container } from 'typedi';
 import { TautulliResponse } from './model/responseModel';
 import { TypedRequest } from './model/typedRequest';
-import { MediaTypes } from './model/mediaTypes';
+import { MediaTypes, supportedMediaTypes } from './model/mediaTypes';
 
-const supportedMediaTypes = [MediaTypes.EPISODE, MediaTypes.MOVIE, MediaTypes.SEASON, MediaTypes.SHOW];
 const logger = Container.get(Logger);
 export const mediaTypesMiddleware = (
   request: TypedRequest<TautulliResponse>,

@@ -7,3 +7,5 @@ export enum MediaTypes {
   TRACK = 'track',
   ALBUM = 'album',
 }
+
+export const supportedMediaTypes = [MediaTypes.EPISODE, MediaTypes.MOVIE, MediaTypes.SEASON, MediaTypes.SHOW];
