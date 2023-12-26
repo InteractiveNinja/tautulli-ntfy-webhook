@@ -43,7 +43,7 @@ export class ConfigLoader {
         .filter(([, value]) => _.isUndefined(value))
         .map(([key]) => key);
       const missingKeys = requiredConfigurationKeys.filter((key) => undefinedConfigurations.includes(key));
-      this.logger.error(`Missing Configuration, please check configuration. Missing Keys: ${missingKeys.join(',')}`);
+      throw this.logger.error(`Missing Configuration, please check configuration. Missing Keys: ${missingKeys.join(',')}`);
     }
     return envConfiguration;
   }

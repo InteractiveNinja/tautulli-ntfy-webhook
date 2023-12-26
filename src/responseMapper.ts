@@ -27,7 +27,7 @@ export class ResponseMapper {
         resolve(ntfyResposne);
       } else {
         const errorMsg = 'Tautulli Webhook Response was expected in other format';
-        this.logger.error(errorMsg);
+        reject(this.logger.error(errorMsg));
       }
     });
   }
@@ -51,7 +51,7 @@ export class ResponseMapper {
           resolve();
         })
         .catch((err: AxiosError) => {
-          this.logger.error(`Error sending Request to ntfy Server: ${err.message}`);
+          reject(this.logger.error(`Error sending Request to ntfy Server: ${err.message}`));
         });
     });
   }
