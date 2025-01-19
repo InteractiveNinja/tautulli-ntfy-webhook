@@ -4,7 +4,7 @@ import { Container } from 'typedi';
 import { TautulliPayload } from './model/responseModel';
 import { TypedRequest } from './model/typedRequest';
 import { MediaTypes } from './model/mediaTypes';
-import _ from "lodash";
+import _ from 'lodash';
 
 const logger = Container.get(Logger);
 

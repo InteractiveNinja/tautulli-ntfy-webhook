@@ -1,10 +1,10 @@
-import axios, {AxiosError, AxiosRequestConfig} from 'axios';
+import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import * as https from 'https';
-import {Configuration} from './model/configuration';
-import {EnvironmentVariablesParser} from './environmentVariablesParser';
-import {Service} from 'typedi';
-import {NtfyPayload, TautulliPayload} from './model/responseModel';
-import {Logger} from './logger';
+import { Configuration } from './model/configuration';
+import { EnvironmentVariablesParser } from './environmentVariablesParser';
+import { Service } from 'typedi';
+import { NtfyPayload, TautulliPayload } from './model/responseModel';
+import { Logger } from './logger';
 
 @Service()
 export class ResponseMapper {
@@ -16,7 +16,7 @@ export class ResponseMapper {
 
   public createAddMediaNtfyPayload(tautulliResponse: TautulliPayload): Promise<NtfyPayload> {
     return new Promise<NtfyPayload>((resolve, reject) => {
-      const {PLEX_TOKEN, PLEX_URL} = this.configuration;
+      const { PLEX_TOKEN, PLEX_URL } = this.configuration;
       const posterUrl = this.createPosterUrl(PLEX_URL, tautulliResponse, PLEX_TOKEN);
 
       if (tautulliResponse.poster != null && tautulliResponse.title != null) {
@@ -45,19 +45,19 @@ export class ResponseMapper {
     );
     this.logger.verbose(JSON.stringify(payload));
     return axios
-        .post(
-            this.configuration.NTFY_URL,
-            {
-              ...payload,
-            },
-            this.createRequestConfig(this.configuration.IGNORE_SSL_CERT, this.configuration.NTFY_TOKEN)
-        )
-        .then(() => {
-          this.logger.verbose('Sending Successful');
-        })
-        .catch((err: AxiosError) => {
-          this.logger.error(`Error sending Request to ntfy Server: ${err.message}`);
-        });
+      .post(
+        this.configuration.NTFY_URL,
+        {
+          ...payload,
+        },
+        this.createRequestConfig(this.configuration.IGNORE_SSL_CERT, this.configuration.NTFY_TOKEN)
+      )
+      .then(() => {
+        this.logger.verbose('Sending Successful');
+      })
+      .catch((err: AxiosError) => {
+        this.logger.error(`Error sending Request to ntfy Server: ${err.message}`);
+      });
   }
 
   private createRequestConfig(ignoreSslCert: boolean, ntfyAccessToken?: string): AxiosRequestConfig {

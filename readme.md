@@ -100,11 +100,13 @@ services:
 "poster": "{poster_thumb}"
 }
 ```
+
 #### How to get `PLEX_TOKEN`
 
 Follow the guide to get token your [Plex API Token](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/)
 
 Copy the value after the `X-Plex-Token=` from the URL. This is ur PLEX API Token
+
 ## Contributing
 
 Contributions are always welcome!

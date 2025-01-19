@@ -17,4 +17,3 @@ export interface Configuration {
   [ConfigurationKeys.PORT]?: number;
   [ConfigurationKeys.IGNORE_SSL_CERT]: boolean;
 }
-
