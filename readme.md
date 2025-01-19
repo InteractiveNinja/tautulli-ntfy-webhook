@@ -6,9 +6,8 @@ A Webservice which translates a Webhook call from Tautulli to an ntfy Server.
 
 ## Features
 
-- Send Tautulli webhooks to ntfy
-- Free choice of ntfy topic
-- Send Poster URL for Webhook request
+- Receive Tautulli webhooks and pass them to NTFY
+- Show Plex posters in NTFY when new media is added
 
 ## Environment Variables
 
@@ -37,7 +36,7 @@ To deploy this project, build the Docker Image and run with docker-compose
 version: "3.0"
 services:
   tautulli2ntfy:
-    image: tautulli2ntfy
+    image: interactiveninja/tautulli-ntfy-webhook:latest
     environment:
       - NTFY_TOPIC="your topic"
       - NTFY_URL="your ntfy server"
