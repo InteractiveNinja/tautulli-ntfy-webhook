@@ -1,11 +1,11 @@
-export interface TautulliResponse {
+export interface TautulliPayload {
   media_type: string;
   title: string;
-  name?: string;
+  message?: string;
   poster: string;
 }
 
-export interface NtfyResponse {
+export interface NtfyPayload {
   topic: string;
   message?: string;
   title: string;

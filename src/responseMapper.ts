@@ -3,7 +3,7 @@ import * as https from 'https';
 import { Configuration } from './model/configuration';
 import { EnvironmentVariablesParser } from './environmentVariablesParser';
 import { Service } from 'typedi';
-import { NtfyResponse, TautulliResponse } from './model/responseModel';
+import { NtfyPayload, TautulliPayload } from './model/responseModel';
 import { Logger } from './logger';
 
 @Service()
@@ -14,15 +14,15 @@ export class ResponseMapper {
     this.configuration = config.getConfigration();
   }
 
-  public async createAddMediaNtfyResponse(tautulliResponse: TautulliResponse): Promise<NtfyResponse> {
-    return await new Promise<NtfyResponse>((resolve, reject) => {
+  public async createAddMediaNtfyResponse(tautulliResponse: TautulliPayload): Promise<NtfyPayload> {
+    return await new Promise<NtfyPayload>((resolve, reject) => {
       const [beforeUrl, afterUrl] = this.configuration.POSTER_TOKEN.split('~');
       if (tautulliResponse.poster != null && tautulliResponse.title != null) {
-        const ntfyResposne: NtfyResponse = {
+        const ntfyResposne: NtfyPayload = {
           attach: `${beforeUrl}${tautulliResponse.poster}${afterUrl}`,
           title: tautulliResponse.title,
           topic: this.configuration.NTFY_TOPIC,
-          message: tautulliResponse.name ?? '‎', // No Space Char, prevents default message from ntfy from being shown
+          message: tautulliResponse.message ?? '‎', // No Space Char, prevents default message from ntfy from being shown
         };
         resolve(ntfyResposne);
       } else {
@@ -32,7 +32,7 @@ export class ResponseMapper {
     });
   }
 
-  public async sendNtfyResponse(payload: NtfyResponse): Promise<void> {
+  public async sendNtfyResponse(payload: NtfyPayload): Promise<void> {
     this.logger.verbose(
       `Trying sending notification to ${this.configuration.NTFY_URL} with topic: ${this.configuration.NTFY_TOPIC}`
     );
