@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 import * as https from 'https';
 import { Configuration } from './model/configuration';
-import { ConfigLoader } from './configLoader';
+import { EnvironmentVariablesParser } from './environmentVariablesParser';
 import { Service } from 'typedi';
 import { NtfyResponse, TautulliResponse } from './model/responseModel';
 import { Logger } from './logger';
@@ -10,7 +10,7 @@ import { Logger } from './logger';
 export class ResponseMapper {
   private readonly configuration: Configuration;
 
-  constructor(readonly config: ConfigLoader, private readonly logger: Logger) {
+  constructor(readonly config: EnvironmentVariablesParser, private readonly logger: Logger) {
     this.configuration = config.getConfigration();
   }
 
@@ -76,6 +76,6 @@ export class ResponseMapper {
       responseType: 'json',
     };
 
-    return { ...ignoreSslCertificate, ...authorization, ...responseType };
+    return Object.assign(ignoreSslCertificate, authorization, responseType);
   }
 }

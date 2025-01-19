@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import express, { Request, Response } from 'express';
-import { ConfigLoader } from './configLoader';
+import { EnvironmentVariablesParser } from './environmentVariablesParser';
 import { mediaTypesMiddleware } from './mediaTypesMiddleware';
 import { Container } from 'typedi';
 import { TypedRequest } from './model/typedRequest';
@@ -12,7 +12,7 @@ const app = express();
 
 app.use(express.json());
 
-const configReader = Container.get(ConfigLoader);
+const configReader = Container.get(EnvironmentVariablesParser);
 const ntfyResponseMapper = Container.get(ResponseMapper);
 const logger = Container.get(Logger);
 
