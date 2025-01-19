@@ -6,7 +6,7 @@ A Webservice which translates a Webhook call from Tautulli to an ntfy Server.
 
 ## Features
 
-- Send Tautulli Webhooks to ntfy
+- Send Tautulli webhooks to ntfy
 - Free choice of ntfy topic
 - Send Poster URL for Webhook request
 
@@ -48,17 +48,57 @@ services:
     ports:
       - 3000:3000
     restart: always
+
 ```
 
 ## Documentation
 
-`TODO`
+### Tautulli Webhook Config
 
-## Appendix
+```
+{
 
+"media_type": "{media_type}",
+"poster": "{poster_thumb}"
+
+<movie>
+"title": "{title}",
+"message": "Ist jetzt auf Plex verfügbar.",
+</movie>
+
+<season>
+"title": "{title}",
+"message": "{episode_count} Episoden wurden hinzugefügt.",
+</season>
+
+<show>
+"title": "{title}",
+"message": "{season_count} Staffeln wurden hinzugefügt.",
+</show>
+
+<episode>
+"title": "{show_name}",
+"message": "{episode_name} ist jetzt auf Plex verfügbar.",
+</episode>
+
+<artist>
+"title": "{artist_name}",
+"message": "Neue Tracks sind jetzt auf Plex verfügbar.",
+</artist>
+
+<track>
+"title": "{artist_name}",
+"message": "{track_name} ist jetzt auf Plex verfügbar.",
+</track>
+
+<album>
+"title": "{artist_name}",
+"message": "{album_name} ist jetzt auf Plex verfügbar.",
+</album>
+}
+```
 #### How to create a `POSTER_TOKEN` URL
 
-`TODO`
 
 ## Contributing
 
