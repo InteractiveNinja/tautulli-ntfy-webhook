@@ -57,10 +57,6 @@ services:
 
 ```
 {
-
-"media_type": "{media_type}",
-"poster": "{poster_thumb}"
-
 <movie>
 "title": "{title}",
 "message": "Ist jetzt auf Plex verfügbar.",
@@ -95,6 +91,9 @@ services:
 "title": "{artist_name}",
 "message": "{album_name} ist jetzt auf Plex verfügbar.",
 </album>
+
+"media_type": "{media_type}",
+"poster": "{poster_thumb}"
 }
 ```
 #### How to create a `POSTER_TOKEN` URL
