@@ -1,10 +1,10 @@
-import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import axios, {AxiosError, AxiosRequestConfig} from 'axios';
 import * as https from 'https';
-import { Configuration } from './model/configuration';
-import { EnvironmentVariablesParser } from './environmentVariablesParser';
-import { Service } from 'typedi';
-import { NtfyPayload, TautulliPayload } from './model/responseModel';
-import { Logger } from './logger';
+import {Configuration} from './model/configuration';
+import {EnvironmentVariablesParser} from './environmentVariablesParser';
+import {Service} from 'typedi';
+import {NtfyPayload, TautulliPayload} from './model/responseModel';
+import {Logger} from './logger';
 
 @Service()
 export class ResponseMapper {
@@ -14,46 +14,50 @@ export class ResponseMapper {
     this.configuration = config.getConfigration();
   }
 
-  public async createAddMediaNtfyResponse(tautulliResponse: TautulliPayload): Promise<NtfyPayload> {
-    return await new Promise<NtfyPayload>((resolve, reject) => {
-      const [beforeUrl, afterUrl] = this.configuration.POSTER_TOKEN.split('~');
+  public createAddMediaNtfyPayload(tautulliResponse: TautulliPayload): Promise<NtfyPayload> {
+    return new Promise<NtfyPayload>((resolve, reject) => {
+      const {PLEX_TOKEN, PLEX_URL} = this.configuration;
+      const posterUrl = this.createPosterUrl(PLEX_URL, tautulliResponse, PLEX_TOKEN);
+
       if (tautulliResponse.poster != null && tautulliResponse.title != null) {
-        const ntfyResposne: NtfyPayload = {
-          attach: `${beforeUrl}${tautulliResponse.poster}${afterUrl}`,
+        const ntfyPayload: NtfyPayload = {
+          attach: posterUrl,
           title: tautulliResponse.title,
           topic: this.configuration.NTFY_TOPIC,
           message: tautulliResponse.message ?? '‎', // No Space Char, prevents default message from ntfy from being shown
         };
-        resolve(ntfyResposne);
+        resolve(ntfyPayload);
       } else {
-        const errorMsg = 'Tautulli Webhook Response was expected in other format';
-        reject(this.logger.error(errorMsg));
+        const errorMessage = 'Tautulli Webhook Response was expected in other format';
+        this.logger.error(errorMessage);
+        reject(new Error(errorMessage));
       }
     });
   }
 
-  public async sendNtfyResponse(payload: NtfyPayload): Promise<void> {
+  private createPosterUrl(PLEX_URL: string, tautulliResponse: TautulliPayload, PLEX_TOKEN: string): string {
+    return `${PLEX_URL}/photo/:/transcode?width=720&height=1080&minSize=1&upscale=1&url=${tautulliResponse.poster}?X-Plex-Token=${PLEX_TOKEN}&X-Plex-Token=${PLEX_TOKEN}`;
+  }
+
+  public sendNtfyResponse(payload: NtfyPayload): Promise<void> {
     this.logger.verbose(
       `Trying sending notification to ${this.configuration.NTFY_URL} with topic: ${this.configuration.NTFY_TOPIC}`
     );
     this.logger.verbose(JSON.stringify(payload));
-    return await new Promise((resolve, reject) => {
-      axios
+    return axios
         .post(
-          this.configuration.NTFY_URL,
-          {
-            ...payload,
-          },
-          this.createRequestConfig(this.configuration.IGNORE_SSL_CERT, this.configuration.NTFY_TOKEN)
+            this.configuration.NTFY_URL,
+            {
+              ...payload,
+            },
+            this.createRequestConfig(this.configuration.IGNORE_SSL_CERT, this.configuration.NTFY_TOKEN)
         )
         .then(() => {
           this.logger.verbose('Sending Successful');
-          resolve();
         })
         .catch((err: AxiosError) => {
-          reject(this.logger.error(`Error sending Request to ntfy Server: ${err.message}`));
+          this.logger.error(`Error sending Request to ntfy Server: ${err.message}`);
         });
-    });
   }
 
   private createRequestConfig(ignoreSslCert: boolean, ntfyAccessToken?: string): AxiosRequestConfig {

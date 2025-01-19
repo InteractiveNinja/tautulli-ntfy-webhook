@@ -13,24 +13,21 @@ A Webservice which translates a Webhook call from Tautulli to an ntfy Server.
 ## Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file or in the docker environment
-
 `PORT` Port for the Webhook defaults to `3000`
 
 `NTFY_URL` URL to NTFY Server
 
-`NTFY_TOPIC` Topic where notifications are sent
+`NTFY_TOPIC` NTFY topic where notifications are being sent
 
-`NTFY_TOKEN` Access token for ntfy
+`NTFY_TOKEN` Optional: Access token for ntfy server
 
-`POSTER_TOKEN` Token for creating a Poster Link
+`PLEX_TOKEN` Plex API token. [Click here to see how](#how-to-get-plex_token)
 
-`IGNORE_SSL_CERT` Disable ssl cert verification
+`NTFY_TOKEN` Plex Server URL; Server from where the Poster Thumbnails are being generated.
 
-## Building the Docker Image
+`IGNORE_SSL_CERT` Optional: Disable SSL cert verification
 
-```bash
-  docker build . -t tautulli2ntfy
-```
+`PORT` Optional: Overwrites default port
 
 ## Deployment
 
@@ -44,11 +41,18 @@ services:
     environment:
       - NTFY_TOPIC="your topic"
       - NTFY_URL="your ntfy server"
-      - POSTER_TOKEN="your poster token"
+      - PLEX_TOKEN="your poster token"
+      - PLEX_URL="your poster token"
     ports:
       - 3000:3000
     restart: always
 
+```
+
+## Building the Docker Image yourself
+
+```bash
+  docker build . -t tautulli2ntfy
 ```
 
 ## Documentation
@@ -96,9 +100,11 @@ services:
 "poster": "{poster_thumb}"
 }
 ```
-#### How to create a `POSTER_TOKEN` URL
+#### How to get `PLEX_TOKEN`
 
+Follow the guide to get token your [Plex API Token](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/)
 
+Copy the value after the `X-Plex-Token=` from the URL. This is ur PLEX API Token
 ## Contributing
 
 Contributions are always welcome!

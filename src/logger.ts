@@ -25,9 +25,8 @@ export class Logger {
     }
   }
 
-  public error(msg: string): never {
+  public error(msg: string): void {
     this.logger.error(msg);
-    throw new Error(msg);
   }
 
   public warn(msg: string): void {

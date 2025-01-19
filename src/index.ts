@@ -1,12 +1,13 @@
 import 'reflect-metadata';
-import express, { Request, Response } from 'express';
-import { EnvironmentVariablesParser } from './environmentVariablesParser';
-import { mediaTypesMiddleware } from './mediaTypesMiddleware';
-import { Container } from 'typedi';
-import { TypedRequest } from './model/typedRequest';
-import { TautulliPayload } from './model/responseModel';
-import { ResponseMapper } from './responseMapper';
-import { Logger } from './logger';
+import express, {Request, Response} from 'express';
+import {EnvironmentVariablesParser} from './environmentVariablesParser';
+import {mediaTypesMiddleware} from './mediaTypesMiddleware';
+import {Container} from 'typedi';
+import {TypedRequest} from './model/typedRequest';
+import {TautulliPayload} from './model/responseModel';
+import {ResponseMapper} from './responseMapper';
+import {Logger} from './logger';
+import {ConfigurationKeys} from "./model/configuration";
 
 const app = express();
 
@@ -26,13 +27,13 @@ app.use(mediaTypesMiddleware);
 
 app.post('/addMedia', (req: TypedRequest<TautulliPayload>, res: Response) => {
   ntfyResponseMapper
-    .createAddMediaNtfyResponse(req.body)
-    .then(async (ntfyResponse) => await ntfyResponseMapper.sendNtfyResponse(ntfyResponse))
+    .createAddMediaNtfyPayload(req.body)
+    .then(ntfyPayload => ntfyResponseMapper.sendNtfyResponse(ntfyPayload))
     .then(() => res.sendStatus(200))
     .catch((err: Error) => res.status(500).send(err.message));
 });
 
-const { PORT } = configReader.getConfigration();
+const PORT = configReader.getConfigration()[ConfigurationKeys.PORT] ?? 3000;
 
 app.listen(PORT, () => {
   logger.info(`server started with PORT: ${PORT}`);

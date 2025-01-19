@@ -11,8 +11,8 @@ export class EnvironmentVariablesParser {
     private readonly requiredConfigurationKeys = [
         ConfigurationKeys.NTFY_URL,
         ConfigurationKeys.NTFY_TOPIC,
-        ConfigurationKeys.POSTER_TOKEN,
-        ConfigurationKeys.PORT,
+        ConfigurationKeys.PLEX_TOKEN,
+        ConfigurationKeys.PLEX_URL,
     ];
 
     constructor(private readonly logger: Logger) {
@@ -31,11 +31,13 @@ export class EnvironmentVariablesParser {
             const missingRequiredKeys = _.entries(partialConfiguration)
                 .filter(([key, value]) => _.isUndefined(value) && requiredKeys.includes(key))
                 .map(([key]) => key);
+            const errorMessage = `Missing Configuration: Please check configuration for following missing configuration keys: ${missingRequiredKeys.join(
+                ','
+            )}`;
             this.logger.error(
-                `Missing Configuration: Please check configuration for following missing configuration keys: ${missingRequiredKeys.join(
-                    ','
-                )}`
+                errorMessage
             );
+            throw new Error(errorMessage);
         }
         return partialConfiguration;
     }
