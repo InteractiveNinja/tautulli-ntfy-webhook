@@ -1,13 +1,13 @@
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+[![Code Style: Prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
 # Tautulli 2 ntfy.sh
 
-A Webservice which translates a Webhook call from Tautulli to an ntfy Server.
+A Webservice that translates Webhook calls from Tautulli to an NTFY Server.
 
 ## Features
 
-- Receive Tautulli webhooks and pass them to NTFY
-- Show Plex posters in NTFY when new media is added
+* Receive Tautulli webhooks and pass them to NTFY
+* Show Plex posters in NTFY when new media is added
 
 ## Environment Variables
 
@@ -22,7 +22,7 @@ To run this project, you will need to add the following environment variables to
 
 `PLEX_TOKEN` Plex API token. [Click here to see how](#how-to-get-plex_token)
 
-`NTFY_TOKEN` Plex Server URL; Server from where the Poster Thumbnails are being generated.
+`PLEX_URL` Plex Server base URL; Server from where the Poster Thumbnails are being generated.
 
 `IGNORE_SSL_CERT` Optional: Disable SSL cert verification
 
@@ -30,7 +30,7 @@ To run this project, you will need to add the following environment variables to
 
 ## Deployment
 
-To deploy this project, build the Docker Image and run with docker-compose
+To deploy this project, build the Docker Image and run with docker-compose:
 
 ```bash
 version: "3.0"
@@ -39,19 +39,18 @@ services:
     image: interactiveninja/tautulli-ntfy-webhook:latest
     environment:
       - NTFY_TOPIC="your topic"
-      - NTFY_URL="your ntfy server"
-      - PLEX_TOKEN="your poster token"
-      - PLEX_URL="your poster token"
+      - NTFY_URL="your ntfy server url"
+      - PLEX_TOKEN="plex api token"
+      - PLEX_URL="plex server base url"
     ports:
       - 3000:3000
     restart: always
-
 ```
 
 ## Building the Docker Image yourself
 
 ```bash
-  docker build . -t tautulli2ntfy
+docker build . -t tautulli2ntfy
 ```
 
 ## Documentation
@@ -102,9 +101,8 @@ services:
 
 #### How to get `PLEX_TOKEN`
 
-Follow the guide to get token your [Plex API Token](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/)
-
-Copy the value after the `X-Plex-Token=` from the URL. This is ur PLEX API Token
+Follow the guide to get your [Plex API Token](https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/).
+Copy the value after the `X-Plex-Token=` from the URL. This is your Plex API Token.
 
 ## Contributing
 
