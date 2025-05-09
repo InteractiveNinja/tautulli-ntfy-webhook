@@ -6,8 +6,8 @@ A Webservice that translates Webhook calls from Tautulli to an NTFY Server.
 
 ## Features
 
-* Receive Tautulli webhooks and pass them to NTFY
-* Show Plex posters in NTFY when new media is added
+- Receive Tautulli webhooks and pass them to NTFY
+- Show Plex posters in NTFY when new media is added
 
 ## Environment Variables
 
